@@ -1,0 +1,94 @@
+
+==================================================
+Starting at 2025-06-06 08:48:06
+Configuration:
+model:
+  _target_: src.upsampler.JAFAR
+  input_dim: 3
+  qk_dim: 128
+  v_dim: ${model.feature_dim}
+  feature_dim: ${get_feature:${backbone.name}}
+  kernel_size: 1
+  num_heads: 4
+  name: jafar
+backbone:
+  _target_: src.backbone.PretrainedViTWrapper
+  name: vit_small_patch14_dinov2.lvd142m
+  norm: true
+optimizer:
+  _target_: torch.optim.AdamW
+  lr: 0.0005
+  betas:
+  - 0.9
+  - 0.999
+  weight_decay: 1.0e-05
+loss:
+  _target_: src.loss.Loss
+  loss_type: cosine_mse
+  dim: ${model.feature_dim}
+train_dataset:
+  _target_: dataloader.ImageDataset
+  root: ${dataroot}/train
+  root_cache: null
+val_dataset:
+  _target_: dataloader.ImageDataset
+  root: ${dataroot}/val
+  root_cache: null
+train_dataloader:
+  _target_: torch.utils.data.DataLoader
+  dataset: ${dataset.train}
+  batch_size: 2
+  shuffle: true
+  worker_init_fn:
+    _target_: utils.training.seed_worker
+  num_workers: 8
+  pin_memory: true
+val_dataloader:
+  _target_: torch.utils.data.DataLoader
+  dataset: ${dataset.val}
+  batch_size: 1
+  shuffle: true
+  worker_init_fn:
+    _target_: utils.training.seed_worker
+  num_workers: 8
+  pin_memory: true
+img_size: 448
+epochs: 1
+max_steps: 100000
+project_root: ${hydra:runtime.cwd}
+dataroot: ${project_root}/data/imagenet
+sanity: false
+dataset_evaluation:
+  _target_: evaluation.dataset.cityscapes.CityscapesDataset
+  root: ${project_root}/data/cityscapes
+  split: train
+  transform: null
+  target_transform: null
+  include_labels: true
+  num_classes: 19
+  tag: cityscapes
+eval:
+  task: seg
+  model_ckpt: ./output/jafar/vit_small_patch14_dinov2.lvd142m/model.pth
+num_epochs: 20
+target_size: ${img_size}
+metrics:
+  seg:
+    num_classes: ${dataset_evaluation.num_classes}
+  depth:
+    min_depth: 0.001
+    max_depth: 10
+
+Using device: cuda
+
+Processing seg task:
+
+Image size: 448
+Loaded model from checkpoint: 
+./output/jafar/vit_small_patch14_dinov2.lvd142m/model.pth
+Train Dataset size: 2975
+Val Dataset size: 500
+Loading classifier from ./checkpoints/seg/jafar.pth
+Loaded classifier from checkpoint: ./checkpoints/seg/jafar.pth
+Evaluating model...
+Results: {'accuracy': 0.9335470199584961, 'iou': 0.6127275824546814}

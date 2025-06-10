@@ -1,0 +1,345 @@
+# JAFAR: Jack up Any Feature at Any Resolution
+
+[![Website](https://img.shields.io/badge/JAFAR-%F0%9F%8C%90Website-purple?style=flat)](https://jafar-upsampler.github.io)
+[![arXiv](https://img.shields.io/badge/-arXiv-%23B31B1B.svg?logo=arxiv&logoColor=white&labelColor=333)](https://jafar-upsampler.github.io)
+
+
+> [Paul Couairon*](https://scholar.google.fr/citations?user=yQRnP7YAAAAJ&hl=fr),
+> [Loick Chambon*](https://loickch.github.io/),
+> [Louis Serrano](https://scholar.google.com/citations?user=fKlo-lUAAAAJ&hl=fr),
+> Jean-Emmanuel Haugeard,
+> [Matthieu Cord](https://cord.isir.upmc.fr/),
+> [Nicolas Thome](https://thome.isir.upmc.fr)
+> 
+> *Equal Contribution.
+
+<div align="center">
+<table>
+  <tr>
+  <td colspan="2" align="center">
+    <img src="asset/teaser.png" width="70%">
+  </td>
+  </tr>
+
+  <tr>
+  <td colspan="2" align="center">
+    <em>JAFAR improves metrics on many downstream tasks: semantic segmentation, depth estimation, feature activation, zero-shot open vocabulary, bird's eye view segmentation by upsampling features from any backbone.</em>
+  </td>
+  </tr>
+
+</tr>
+</table>
+</div>
+
+
+<table>
+
+
+</table>
+
+# Abstract
+
+<em> Foundation Vision Encoders have become essential for a wide range of dense vision tasks. However, their low-resolution spatial feature outputs necessitate feature upsampling to produce the high-resolution modalities required for downstream tasks. In this work, we introduce JAFAR—a lightweight and flexible feature upsampler that enhances the spatial resolution of visual features from any Foundation Vision Encoder to an arbitrary target resolution. JAFAR employs an attention- based module designed to promote semantic alignment between high-resolution queries—derived from low-level image features—and semantically enriched low- resolution keys, using Spatial Feature Transform (SFT) modulation. Notably, despite the absence of high-resolution supervision, we demonstrate that learning at low upsampling ratios and resolutions generalizes remarkably well to significantly higher output scales. Extensive xperiments show that JAFAR effectively recovers fine-grained spatial details and consistently outperforms existing feature upsampling methods across a diverse set of downstream tasks. </em>
+
+<table>
+  <tr>
+  <td align="center">
+    <img src="asset/architecture.png" width="70%">
+  </td>
+  </tr>
+  
+  <tr>
+  <td align="center">
+    <em>JAFAR is an efficient attention-based feature upsampler that allows upsampling to any resolution.</em>
+  </td>
+  </tr>
+
+</table>
+
+## Updates:
+* 【09/06/2025】 Code released.
+* 【09/06/2025】 [JAFAR]() is now on arxiv.
+
+# 🚀 Main results
+
+<table>
+  <tr>
+  <td align="center">
+    <img src="asset/pca.png">
+  </td>
+  </tr>
+  
+  <tr>
+  <td align="center">
+    <em>PCA visualization of features from various upsamplers.</em>
+  </td>
+  </tr>
+
+</table>
+
+### 🔥 Semantic Segmentation
+
+<table>
+  <tr>
+    <td align="center">
+      <img src="asset/segmentation.png" width="80%">
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <em>Linear probing results for semantic segmentation across various upsamplers.</em>
+    </td>
+  </tr>
+</table>
+<details>
+<summary><strong>📊 Linear Probing Results</strong></summary>
+
+<br>
+
+<div align="center">
+
+| Method               | COCO mIoU (↑) | VOC mIoU (↑) | ADE20k mIoU (↑) | Cityscapes mIoU (↑) |
+|----------------------|------------:|-----------:|------------:|-------------:|
+| **Training-Free**    |             |            |             |              |
+| Bilinear             | 59.03       | 80.70      | 39.23       | 59.37        |
+| **Task-Agnostic**    |             |            |             |              |
+| [FeatUp](https://github.com/mhamilton723/FeatUp)               | 60.10       | 81.08      | 38.82       | 56.06        |
+| [LiFT](https://github.com/saksham-s/lift/tree/main)                 | 58.18       | 78.06      | 38.73       | 58.75        |
+| **JAFAR (ours)** 🥇     | **60.78**   | **84.44**  | **40.49**   | **61.47**    |
+
+</div>
+
+</details>
+
+
+
+### 🔥 Depth estimation
+
+<table>
+  <tr>
+  <td align="center">
+    <img src="asset/depth.png">
+  </td>
+  </tr>
+  
+  <tr>
+  <td align="center">
+    <em>Linear probing results for depth estimation across various upsamplers.</em>
+  </td>
+  </tr>
+</table>
+
+<details>
+<summary><strong>📊 Linear Probing Results </strong></summary>
+
+<br>
+
+<div align="center">
+
+| Method           | δ₁ (↑)  | RMSE (↓) |
+|------------------|--------:|---------:|
+| **Training-Free**|         |          |
+| Bilinear         | 59.92   | 0.66     |
+| **Task-Agnostic**|         |          |
+| [FeatUp](https://github.com/mhamilton723/FeatUp)           | 61.69   | 0.64     |
+| [LiFT](https://github.com/saksham-s/lift/tree/main)             | 57.04   | 0.70     |
+| **JAFAR (ours)** 🥇 | **62.18** | **0.62** |
+
+</div>
+
+</details>
+
+### 🔥 Class Activation Maps
+
+<table>
+  <tr>
+  <td align="center">
+    <img src="asset/gradcam.png">
+  </td>
+  </tr>
+  
+  <tr>
+  <td align="center">
+    <em>Class Activation Map visualizations across various upsamplers.</em>
+  </td>
+  </tr>
+
+</table>
+
+<details>
+<summary><strong>📊 Evaluation </strong></summary>
+
+<br>
+
+<div align="center">
+
+| Method   | A.D (↓) | A.I (↑) | A.G (↑) | ADCC (↑) |
+|----------|-------|-------|-------|--------|
+| **Training-free** |       |       |       |        |
+| Bilinear | 19.0  | 18.5  | 3.4   | 61.7   |
+| **Task-Agnostic** |       |       |       |        |
+| [FeatUp](https://github.com/mhamilton723/FeatUp) | **15.3**  | 24.0  | 4.3   | 64.3   |
+| [LiFT](https://github.com/saksham-s/lift/tree/main)   | 66.9  | 8.7   | 2.3   | 53.0   |
+| **JAFAR (ours)** 🥇 | 17.4 | **30.9** | **6.5** | **73.3** |
+</div>
+
+</details>
+
+### 🔥 Vehicle segmentation
+
+<table>
+  <tr>
+  <td align="center">
+    <img src="asset/bev.gif" width="70%">
+  </td>
+  </tr>
+  
+  <tr>
+  <td align="center">
+    <em>Vehicle segmentation in Bird's Eye View using DINOv2 + JAFAR.</em>
+  </td>
+  </tr>
+</table>
+
+<details>
+<summary><strong>📊 Evaluation</strong></summary>
+
+<br>
+
+| Upsampling  mIoU (↑) | [SimpleBeV](https://github.com/aharley/simple_bev) | [PointBeV](https://github.com/valeoai/PointBeV) | [BeVFormer](https://github.com/fundamentalvision/BEVFormer) |
+|----------------------|-----------|----------|-----------|
+| **Training-free** |       |       |       |        |
+| Low-Res              | 31.75     | 34.89    | 33.72     |
+| Bilinear             | 33.67     | 36.01    | 34.18     |
+| **Task-Agnostic** |       |       |       |        |
+| [FeatUp](https://github.com/mhamilton723/FeatUp)               | 33.95     | 35.38    | 34.01     |
+| **JAFAR (ours)** 🥇                | **36.59**     | **37.20**    | **36.54**     |
+
+</div>
+</details>
+
+### 🔥 Zero-shot Open vocabulary
+
+<details>
+<summary><strong>📊 Linear Probing Results </strong></summary>
+
+<br>
+
+| Upsampling           | VOC mIoU (↑) | ADE mIoU (↑) | City mIoU (↑) |
+|----------------------|--------------:|--------------:|---------------:|
+| **Training-Free**    |               |               |                |
+| Bilinear             | 27.87         | 11.03         | 21.56          |
+| **Task-Agnostic**    |               |               |                |
+| [FeatUp](https://github.com/mhamilton723/FeatUp)               | _32.27_       | _13.03_       | _24.76_        |
+| **JAFAR (ours)** 🥇     | **35.70**     | **13.61**     | **25.26**      |
+
+</div>
+
+</details>
+
+## 🔨 Setup <a name="setup"></a>
+
+➡️ Install.
+
+Launch the following commands to install the dependencies and create a mamba (/ conda) environment.
+
+<details>
+  <summary> Details</summary>
+
+``` bash
+git clone https://github.com/...
+cd JAFAR
+
+micromamba create -n jafar python==3.10.14  -y -c conda-forge
+micromamba activate jafar
+micromamba install pytorch==2.4.1 torchvision==0.19.1 pytorch-cuda=11.8 -c pytorch -c nvidia -c conda-forge -y
+
+pip install uv
+uv pip install einops==0.8.0 matplotlib==3.7.0 numpy==1.24.4 timm==1.0.11 plotly tensorboard hydra-core ipykernel rich pytest scikit-learn torchmetrics==1.6.2
+```
+</details>
+
+
+➡️ Datasets.
+
+See [Preparing Datasets for JAFAR](docs/datasets.md) for details on how to download the datasets.
+
+## 🔄 Training <a name="training"></a>
+
+To train JAFAR with the dinov2 backbone, execute the following command:
+
+```python
+python train.py backbone.name=vit_small_patch14_dinov2.lvd142m hydra.run.dir=output/jafar/dinov2
+```
+
+You can change the backbone to any other available backbone in the timm library by just changing the `backbone.name` argument.
+
+To fast prototyping we add a sanity argument, it will execute the code for only a few steps and helps you to see if everything is working properly. You can use it as follows:
+
+```python
+python train.py sanity=True
+```
+
+
+## 🔄 Evaluation <a name="evaluating"></a>
+To evaluate the model on segmentation on the VOC dataset with the dinov2 backbone, execute:
+```python
+python evaluation/train_probes.py eval.task=seg dataset_evaluation=voc \
+  backbone.name=vit_small_patch14_dinov2.lvd142m \
+  eval.model_ckpt=./output/jafar/vit_small_patch14_dinov2.lvd142m/model.pth \
+  hydra.run.dir=evaluation/unsupervised/voc/vit_small_patch14_dinov2.lvd142m
+```
+You can change the dataset and the backbone to any other available dataset and backbone in the timm library by just changing the `dataset_evaluation` and `backbone.name` arguments. It will save logs, tensorboard and checkpoits in the hydra directory.
+
+We add a file to benchmark the evaluation time and memory usage of the model. You can run it as follows:
+```python
+pytest test/test_time_and_memory.py -s -v
+```
+
+## 🔄 Notebooks 
+
+We provide notebooks to perform training, inference and visualisation.
+
+## 🏆 Available Models
+
+We provide pre-trained JAFAR models for various backbones. You can find the model weights from the following links:
+
+<div align="center">
+
+| Backbone Name     | Download Link                                                                 |
+|-------------------|--------------------------------------------------------------------------------|
+| ViT-B-16             | [Link](output/jafar/vit_base_patch16_224/model.pth)                           |
+| ViT-B-16-DINO            | [Link](output/jafar/vit_base_patch16_224.dino/model.pth)                      |
+| ViT-S-14-DINOv2          | [Link](output/jafar/vit_small_patch14_dinov2.lvd142m/model.pth)               |
+| ViT-S-Reg4-14-DINOv2      | [Link](output/jafar/vit_small_patch14_reg4_dinov2/model.pth)                  |
+| ViT-B-16-CLIP            | [Link](output/jafar/vit_base_patch16_clip_384/model.pth)                      |
+| ViT-B-16-SigLIP2          | [Link](output/jafar/vit_base_patch16_siglip_512.v2_webli/model.pth)           |
+
+</div>
+
+Do not hesitate to open an issue if you need a specific backbone or if you have any questions to train it by yourself.
+
+
+## 👍 Acknowledgements
+
+Many thanks to these excellent open source projects:
+* https://github.com/mhamilton723/FeatUp
+* https://github.com/saksham-s/lift/tree/main
+* https://github.com/Jiawei-Yang/Denoising-ViT
+* https://github.com/chongzhou96/MaskCLIP
+* https://github.com/valeoai/PointBeV
+
+To structure our code we used:
+* https://github.com/facebookresearch/hydra
+
+
+## ✏️ Bibtex
+
+If this work is helpful for your research, please consider citing the following BibTeX entry and putting a star on this repository.
+
+```
+@inproceedings{
+}
+```
+
+---

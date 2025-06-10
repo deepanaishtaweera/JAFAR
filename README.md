@@ -57,7 +57,7 @@
 </table>
 
 ## Updates:
-* 【09/06/2025】 Code released.
+* 【10/06/2025】 Code released.
 * 【09/06/2025】 [JAFAR]() is now on arxiv.
 
 # 🚀 Main results

@@ -206,6 +206,8 @@
 
 <br>
 
+<div align="center">
+
 | Upsampling  mIoU (↑) | [SimpleBeV](https://github.com/aharley/simple_bev) | [PointBeV](https://github.com/valeoai/PointBeV) | [BeVFormer](https://github.com/fundamentalvision/BEVFormer) |
 |----------------------|-----------|----------|-----------|
 | **Training-free** |       |       |       |        |
@@ -224,6 +226,8 @@
 <summary><strong>📊 Linear Probing Results </strong></summary>
 
 <br>
+
+<div align="center">
 
 | Upsampling           | VOC mIoU (↑) | ADE mIoU (↑) | City mIoU (↑) |
 |----------------------|--------------:|--------------:|---------------:|

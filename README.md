@@ -342,7 +342,7 @@ To structure our code we used:
 If this work is helpful for your research, please consider citing the following BibTeX entry and putting a star on this repository.
 
 ```
-@misc{couairon2025jafarjackfeatureresolution,
+@misc{couairon2025jafar,
       title={JAFAR: Jack up Any Feature at Any Resolution}, 
       author={Paul Couairon and Loick Chambon and Louis Serrano and Jean-Emmanuel Haugeard and Matthieu Cord and Nicolas Thome},
       year={2025},

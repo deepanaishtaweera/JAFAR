@@ -259,7 +259,7 @@ micromamba activate jafar
 micromamba install pytorch==2.4.1 torchvision==0.19.1 pytorch-cuda=11.8 -c pytorch -c nvidia -c conda-forge -y
 
 pip install uv
-uv pip install einops==0.8.0 matplotlib==3.7.0 numpy==1.24.4 timm==1.0.11 plotly tensorboard hydra-core ipykernel rich pytest scikit-learn torchmetrics==1.6.2
+uv pip install einops==0.8.0 matplotlib==3.7.0 numpy==1.24.4 timm==1.0.11 plotly tensorboard hydra-core ipykernel rich pytest scikit-learn torchmetrics==1.6.2 transformers
 ```
 </details>
 

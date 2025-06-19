@@ -31,8 +31,8 @@ unzip downloads/stuffthingmaps_trainval2017.zip -d dataset/annotations/
 # https://github.com/xu-ji/IIC/blob/master/datasets/README.txt
 wget https://www.robots.ox.ac.uk/~xuji/datasets/COCOStuff164kCurated.tar.gz
 tar -xzf COCOStuff164kCurated.tar.gz
-mv COCO/COCOStuff164k ./currated
-rmdir COCO
+mv COCO/COCOStuff164k/curated ./curated
+rm -r COCO
 rm COCOStuff164kCurated.tar.gz
 cd ../
 ```

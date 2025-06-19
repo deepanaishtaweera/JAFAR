@@ -290,7 +290,7 @@ To evaluate the model on segmentation on the VOC dataset with the dinov2 backbon
 ```python
 python evaluation/train_probes.py eval.task=seg dataset_evaluation=voc \
   backbone.name=vit_small_patch14_dinov2.lvd142m \
-  eval.model_ckpt=./output/jafar/vit_small_patch14_dinov2.lvd142m/model.pth \
+  eval.model_ckpt=model.pth \
   hydra.run.dir=evaluation/unsupervised/voc/vit_small_patch14_dinov2.lvd142m
 ```
 You can change the dataset and the backbone to any other available dataset and backbone in the timm library by just changing the `dataset_evaluation` and `backbone.name` arguments. It will save logs, tensorboard and checkpoits in the hydra directory.
@@ -312,12 +312,12 @@ We provide pre-trained JAFAR models for various backbones. You can find the mode
 
 | Backbone Name     | Download Link                                                                 |
 |-------------------|--------------------------------------------------------------------------------|
-| ViT-B-16             | [Link](output/jafar/vit_base_patch16_224/model.pth)                           |
-| ViT-B-16-DINO            | [Link](output/jafar/vit_base_patch16_224.dino/model.pth)                      |
-| ViT-S-14-DINOv2          | [Link](output/jafar/vit_small_patch14_dinov2.lvd142m/model.pth)               |
-| ViT-S-Reg4-14-DINOv2      | [Link](output/jafar/vit_small_patch14_reg4_dinov2/model.pth)                  |
-| ViT-B-16-CLIP            | [Link](output/jafar/vit_base_patch16_clip_384/model.pth)                      |
-| ViT-B-16-SigLIP2          | [Link](output/jafar/vit_base_patch16_siglip_512.v2_webli/model.pth)           |
+| ViT-B-16             | [Download](https://github.com/PaulCouairon/JAFAR/releases/download/Weights/vit_base_patch16_224.dino.pth)                           |
+| ViT-B-16-DINO            | [Download](https://github.com/PaulCouairon/JAFAR/releases/download/Weights/vit_base_patch16_224.pth)                      |
+| ViT-S-14-DINOv2          | [Download](https://github.com/PaulCouairon/JAFAR/releases/download/Weights/vit_small_patch14_dinov2.lvd142m.pth)               |
+| ViT-S-Reg4-14-DINOv2      | [Download](https://github.com/PaulCouairon/JAFAR/releases/download/Weights/vit_small_patch14_reg4_dinov2.pth)                  |
+| ViT-B-16-CLIP            | [Download](https://github.com/PaulCouairon/JAFAR/releases/download/Weights/vit_base_patch16_clip_384.pth)                      |
+| ViT-B-16-SigLIP2          | [Download](https://github.com/PaulCouairon/JAFAR/releases/download/Weights/vit_base_patch16_siglip_512.v2_webli.pth)           |
 
 </div>
 

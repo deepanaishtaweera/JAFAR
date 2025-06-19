@@ -64,8 +64,8 @@ class COCODataset(Dataset):
             with open(join(self.root, "curated", split_dir, self.image_list), "r") as f:
                 img_ids = [fn.rstrip() for fn in f.readlines()]
                 for img_id in img_ids:
-                    self.image_files.append(join(self.root, "images", split_dir, img_id + ".jpg"))
-                    self.label_files.append(join(self.root, "annotations", split_dir, img_id + ".png"))
+                    self.image_files.append(join(self.root, "dataset", "images", split_dir, img_id + ".jpg"))
+                    self.label_files.append(join(self.root, "dataset", "annotations", split_dir, img_id + ".png"))
 
         self.fine_to_coarse = {
             0: 9,

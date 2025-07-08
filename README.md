@@ -2,7 +2,9 @@
 
 [![Website](https://img.shields.io/badge/JAFAR-%F0%9F%8C%90Website-purple?style=flat)](https://jafar-upsampler.github.io)
 [![arXiv](https://img.shields.io/badge/-arXiv-%23B31B1B.svg?logo=arxiv&logoColor=white&labelColor=333)](https://jafar-upsampler.github.io)
-[![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/jafar-jack-up-any-feature-at-any-resolution/feature-upsampling-on-imagenet)](https://paperswithcode.com/sota/feature-upsampling-on-imagenet?p=jafar-jack-up-any-feature-at-any-resolution)
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/PaulCouairon/JAFAR/blob/main/colab_demo.ipynb)
+
+[![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/jafar-jack-up-any-feature-at-any-resolution-1/feature-upsampling-on-imagenet)](https://paperswithcode.com/sota/feature-upsampling-on-imagenet?p=jafar-jack-up-any-feature-at-any-resolution-1)
 
 
 > [Paul Couairon*](https://scholar.google.fr/citations?user=yQRnP7YAAAAJ&hl=fr),

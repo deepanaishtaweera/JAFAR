@@ -7,7 +7,7 @@
 [![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/jafar-jack-up-any-feature-at-any-resolution-1/feature-upsampling-on-imagenet)](https://paperswithcode.com/sota/feature-upsampling-on-imagenet?p=jafar-jack-up-any-feature-at-any-resolution-1)
 
 
-> [Paul Couairon*](https://scholar.google.fr/citations?user=yQRnP7YAAAAJ&hl=fr),
+> [Paul Couairon*](https://pcouairon.github.io),
 > [Loick Chambon*](https://loickch.github.io/),
 > [Louis Serrano](https://scholar.google.com/citations?user=fKlo-lUAAAAJ&hl=fr),
 > Jean-Emmanuel Haugeard,

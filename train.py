@@ -34,12 +34,15 @@ def round_to_nearest_multiple(value, multiple=14):
     return multiple * round(value / multiple)
 
 
-def backbone_feats(image_batch, backbone):
+def backbone_feats(cfg, image_batch, backbone):
     _, _, H, W = image_batch.shape  # Get original height and width
     with torch.no_grad():
         hr_patch_tokens, _ = backbone(image_batch)
         # Downscale
-        downscale_factor = np.random.uniform(0.25, 0.5)
+        if cfg.ratio == "fixed":
+            downscale_factor = 0.5
+        else:
+            downscale_factor = np.random.uniform(0.25, 0.5)
         new_H = round_to_nearest_multiple(H * downscale_factor, backbone.patch_size)
         new_W = round_to_nearest_multiple(W * downscale_factor, backbone.patch_size)
         low_res_batch = F.interpolate(image_batch, size=(new_H, new_W), mode="bilinear")
@@ -110,7 +113,7 @@ def trainer(cfg: DictConfig):
     optimizer_jafar = instantiate(cfg.optimizer, params=all_params)
 
     total_batches = cfg.max_steps
-    checkpoint_interval = int(total_batches * 0.5)
+    checkpoint_interval = int(total_batches * 0.25)
 
     # Calculate total training steps
     total_epochs = cfg.epochs
@@ -131,14 +134,14 @@ def trainer(cfg: DictConfig):
             batch = get_batch(batch, device)
             image_batch = batch["image"]
 
-            with autocast(device_type="cuda", dtype=torch.bfloat16):
+            with autocast(device_type="cuda", enabled=cfg.bfloat16, dtype=torch.bfloat16):
                 # Helper function for checkpointed/non-checkpointed forward
                 def run_model(model, inputs, **kwargs):
                     return model(*inputs, **kwargs)
 
                 # ============ Extract Backbone Features ============ #
                 with torch.no_grad():
-                    hr_feats, lr_feats = backbone_feats(image_batch, backbone)
+                    hr_feats, lr_feats = backbone_feats(cfg, image_batch, backbone)
                 _, _, h, w = hr_feats.shape
 
                 # ============ Feature Prediction ============ #
@@ -153,7 +156,8 @@ def trainer(cfg: DictConfig):
                 # ============ Loss JAFAR ============ #
                 loss = {"jafar_hr": 0.0, "jafar_reg": 0.0}
                 loss["jafar_hr"] = criterion(jafar_hr_feats, hr_feats)["total"]
-                loss["jafar_reg"] = criterion(pred_uhr_feats, target_uhr_feats.detach())["total"] * 0.1
+                if cfg.reg_weight > 0:
+                    loss["jafar_reg"] = criterion(pred_uhr_feats, target_uhr_feats.detach())["total"] * cfg.reg_weight
 
             loss_jafar = loss["jafar_hr"] + loss["jafar_reg"]
 

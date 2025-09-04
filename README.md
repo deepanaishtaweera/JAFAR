@@ -4,10 +4,8 @@
 [![arXiv](https://img.shields.io/badge/-arXiv-%23B31B1B.svg?logo=arxiv&logoColor=white&labelColor=333)](https://jafar-upsampler.github.io)
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/PaulCouairon/JAFAR/blob/main/colab_demo.ipynb)
 
-[![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/jafar-jack-up-any-feature-at-any-resolution-1/feature-upsampling-on-imagenet)](https://paperswithcode.com/sota/feature-upsampling-on-imagenet?p=jafar-jack-up-any-feature-at-any-resolution-1)
 
-
-> [Paul Couairon*](https://scholar.google.fr/citations?user=yQRnP7YAAAAJ&hl=fr),
+> [Paul Couairon*](https://pcouairon.github.io),
 > [Loick Chambon*](https://loickch.github.io/),
 > [Louis Serrano](https://scholar.google.com/citations?user=fKlo-lUAAAAJ&hl=fr),
 > Jean-Emmanuel Haugeard,
@@ -16,48 +14,20 @@
 > 
 > *Equal Contribution.
 
-<div align="center">
-<table>
-  <tr>
-  <td colspan="2" align="center">
-    <img src="asset/teaser.png" width="70%">
-  </td>
-  </tr>
 
-  <tr>
-  <td colspan="2" align="center">
-    <em>JAFAR improves metrics on many downstream tasks: semantic segmentation, depth estimation, feature activation, zero-shot open vocabulary, bird's eye view segmentation by upsampling features from any backbone.</em>
-  </td>
-  </tr>
-
-</tr>
-</table>
-</div>
-
-
-<table>
-
-
-</table>
+<p align="center">
+  <img src="asset/teaser.png" alt="JAFAR Overview" width="80%">
+</p>
+<p align="center"><i>JAFAR improves metrics on many downstream tasks: semantic segmentation, depth estimation, feature activation, zero-shot open vocabulary, bird's eye view segmentation by upsampling features from any backbone.</i></p>
 
 # Abstract
 
 <em> Foundation Vision Encoders have become essential for a wide range of dense vision tasks. However, their low-resolution spatial feature outputs necessitate feature upsampling to produce the high-resolution modalities required for downstream tasks. In this work, we introduce JAFAR—a lightweight and flexible feature upsampler that enhances the spatial resolution of visual features from any Foundation Vision Encoder to an arbitrary target resolution. JAFAR employs an attention- based module designed to promote semantic alignment between high-resolution queries—derived from low-level image features—and semantically enriched low- resolution keys, using Spatial Feature Transform (SFT) modulation. Notably, despite the absence of high-resolution supervision, we demonstrate that learning at low upsampling ratios and resolutions generalizes remarkably well to significantly higher output scales. Extensive xperiments show that JAFAR effectively recovers fine-grained spatial details and consistently outperforms existing feature upsampling methods across a diverse set of downstream tasks. </em>
 
-<table>
-  <tr>
-  <td align="center">
-    <img src="asset/architecture.png" width="70%">
-  </td>
-  </tr>
-  
-  <tr>
-  <td align="center">
-    <em>JAFAR is an efficient attention-based feature upsampler that allows upsampling to any resolution.</em>
-  </td>
-  </tr>
-
-</table>
+<p align="center">
+  <img src="asset/architecture.png" alt="JAFAR Architecture" width="80%">
+</p>
+<p align="center"><i>JAFAR is an efficient attention-based feature upsampler that allows upsampling to any resolution.</i></p>
 
 ## Updates:
 * 【10/06/2025】 Code released.
@@ -65,35 +35,18 @@
 
 # 🚀 Main results
 
-<table>
-  <tr>
-  <td align="center">
-    <img src="asset/pca.png">
-  </td>
-  </tr>
-  
-  <tr>
-  <td align="center">
-    <em>PCA visualization of features from various upsamplers.</em>
-  </td>
-  </tr>
-
-</table>
+<p align="center">
+  <img src="asset/pca.png" alt="PCA Visualization" width="100%">
+</p>
+<p align="center"><i>PCA visualization of features from various upsamplers.</i></p>
 
 ### 🔥 Semantic Segmentation
 
-<table>
-  <tr>
-    <td align="center">
-      <img src="asset/segmentation.png" width="80%">
-    </td>
-  </tr>
-  <tr>
-    <td align="center">
-      <em>Linear probing results for semantic segmentation across various upsamplers.</em>
-    </td>
-  </tr>
-</table>
+<p align="center">
+  <img src="asset/segmentation.png" alt="Segmentation" width="100%">
+</p>
+<p align="center"><i>Linear probing results for semantic segmentation across various upsamplers.</i></p>
+
 <details>
 <summary><strong>📊 Linear Probing Results</strong></summary>
 
@@ -118,19 +71,10 @@
 
 ### 🔥 Depth estimation
 
-<table>
-  <tr>
-  <td align="center">
-    <img src="asset/depth.png">
-  </td>
-  </tr>
-  
-  <tr>
-  <td align="center">
-    <em>Linear probing results for depth estimation across various upsamplers.</em>
-  </td>
-  </tr>
-</table>
+<p align="center">
+  <img src="asset/depth.png" alt="Depth" width="100%">
+</p>
+<p align="center"><i>Linear probing results for depth estimation across various upsamplers.</i></p>
 
 <details>
 <summary><strong>📊 Linear Probing Results </strong></summary>
@@ -154,20 +98,10 @@
 
 ### 🔥 Class Activation Maps
 
-<table>
-  <tr>
-  <td align="center">
-    <img src="asset/gradcam.png">
-  </td>
-  </tr>
-  
-  <tr>
-  <td align="center">
-    <em>Class Activation Map visualizations across various upsamplers.</em>
-  </td>
-  </tr>
-
-</table>
+<p align="center">
+  <img src="asset/gradcam.png" alt="Gradcam" width="100%">
+</p>
+<p align="center"><i>Class Activation Map visualizations across various upsamplers.</i></p>
 
 <details>
 <summary><strong>📊 Evaluation </strong></summary>
@@ -190,19 +124,10 @@
 
 ### 🔥 Vehicle segmentation
 
-<table>
-  <tr>
-  <td align="center">
-    <img src="asset/bev.gif" width="70%">
-  </td>
-  </tr>
-  
-  <tr>
-  <td align="center">
-    <em>Vehicle segmentation in Bird's Eye View using DINOv2 + JAFAR.</em>
-  </td>
-  </tr>
-</table>
+<p align="center">
+  <img src="asset/bev.gif" alt="BeV" width="100%">
+</p>
+<p align="center"><i>Vehicle segmentation in Bird's Eye View using DINOv2 + JAFAR.</i></p>
 
 <details>
 <summary><strong>📊 Evaluation</strong></summary>
@@ -221,27 +146,6 @@
 | **JAFAR (ours)** 🥇                | **36.59**     | **37.20**    | **36.54**     |
 
 </div>
-</details>
-
-### 🔥 Zero-shot Open vocabulary
-
-<details>
-<summary><strong>📊 Linear Probing Results </strong></summary>
-
-<br>
-
-<div align="center">
-
-| Upsampling           | VOC mIoU (↑) | ADE mIoU (↑) | City mIoU (↑) |
-|----------------------|--------------:|--------------:|---------------:|
-| **Training-Free**    |               |               |                |
-| Bilinear             | 27.87         | 11.03         | 21.56          |
-| **Task-Agnostic**    |               |               |                |
-| [FeatUp](https://github.com/mhamilton723/FeatUp)               | _32.27_       | _13.03_       | _24.76_        |
-| **JAFAR (ours)** 🥇     | **35.70**     | **13.61**     | **25.26**      |
-
-</div>
-
 </details>
 
 ## 🔨 Setup <a name="setup"></a>

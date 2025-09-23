@@ -220,8 +220,8 @@ We provide pre-trained JAFAR models for various backbones. You can find the mode
 
 | Backbone Name     | Download Link                                                                 |
 |-------------------|--------------------------------------------------------------------------------|
-| ViT-B-16             | [Download](https://github.com/PaulCouairon/JAFAR/releases/download/Weights/vit_base_patch16_224.dino.pth)                           |
-| ViT-B-16-DINO            | [Download](https://github.com/PaulCouairon/JAFAR/releases/download/Weights/vit_base_patch16_224.pth)                      |
+| ViT-B-16            | [Download](https://github.com/PaulCouairon/JAFAR/releases/download/Weights/vit_base_patch16_224.pth)                      |
+| ViT-B-16-DINO             | [Download](https://github.com/PaulCouairon/JAFAR/releases/download/Weights/vit_base_patch16_224.dino.pth)                           |
 | ViT-S-14-DINOv2          | [Download](https://github.com/PaulCouairon/JAFAR/releases/download/Weights/vit_small_patch14_dinov2.lvd142m.pth)               |
 | ViT-B-14-DINOv2          | [Download](https://github.com/PaulCouairon/JAFAR/releases/download/Weights/vit_base_patch14_dinov2.lvd142m.pth)               |
 | ViT-S-Reg4-14-DINOv2      | [Download](https://github.com/PaulCouairon/JAFAR/releases/download/Weights/vit_small_patch14_reg4_dinov2.pth)                  |

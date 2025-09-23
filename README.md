@@ -31,6 +31,8 @@
 <p align="center"><i>JAFAR is an efficient attention-based feature upsampler that allows upsampling to any resolution.</i></p>
 
 ## Updates:
+* 【23/09/2025】 **JAFAR** checkpoints for **DINOv3** (S/S+/B/L) released.
+* 【18/09/2025】 **JAFAR** is accepted at NeurIPS 2025!
 * 【10/06/2025】 Code released.
 * 【16/06/2025】 [JAFAR](https://arxiv.org/abs/2506.11136) is now on arxiv.
 

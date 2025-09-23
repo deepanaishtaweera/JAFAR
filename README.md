@@ -225,6 +225,10 @@ We provide pre-trained JAFAR models for various backbones. You can find the mode
 | ViT-S-14-DINOv2          | [Download](https://github.com/PaulCouairon/JAFAR/releases/download/Weights/vit_small_patch14_dinov2.lvd142m.pth)               |
 | ViT-B-14-DINOv2          | [Download](https://github.com/PaulCouairon/JAFAR/releases/download/Weights/vit_base_patch14_dinov2.lvd142m.pth)               |
 | ViT-S-Reg4-14-DINOv2      | [Download](https://github.com/PaulCouairon/JAFAR/releases/download/Weights/vit_small_patch14_reg4_dinov2.pth)                  |
+| ViT-S-16-DINOv3      | [Download](https://github.com/PaulCouairon/JAFAR/releases/download/Weights/vit_small_patch16_dinov3.lvd1689m.pth)                  |
+| ViT-S+-16-DINOv3      | [Download](https://github.com/PaulCouairon/JAFAR/releases/download/Weights/vit_small_plus_patch16_dinov3.lvd1689m.pth)                  |
+| ViT-B-16-DINOv3      | [Download](https://github.com/PaulCouairon/JAFAR/releases/download/Weights/vit_base_patch16_dinov3.lvd1689m.pth)                  |
+| ViT-L-16-DINOv3      | [Download](https://github.com/PaulCouairon/JAFAR/releases/download/Weights/vit_large_patch16_dinov3.lvd1689m.pth)                  |
 | ViT-B-16-CLIP            | [Download](https://github.com/PaulCouairon/JAFAR/releases/download/Weights/vit_base_patch16_clip_384.pth)                      |
 | ViT-B-16-SigLIP2          | [Download](https://github.com/PaulCouairon/JAFAR/releases/download/Weights/vit_base_patch16_siglip_512.v2_webli.pth)           |
 

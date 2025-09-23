@@ -18,6 +18,11 @@ MODEL_LIST = [
     "vit_base_patch16_clip_384",
     "vit_base_patch16_siglip_512.v2_webli",
     "vit_base_patch16_224",
+    "vit_small_patch16_dinov3.lvd1689m",
+    "vit_small_plus_patch16_dinov3.lvd1689m",
+    "vit_base_patch16_dinov3.lvd1689m",
+    "vit_large_patch16_dinov3.lvd1689m",
+
 ]
 
 

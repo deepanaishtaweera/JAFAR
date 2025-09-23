@@ -25,6 +25,6 @@ def load_model(backbone, project_root):
     model.eval()
 
     # Load checkpoint
-    model.load_state_dict(torch.load(f"./output/jafar/{backbone.name}/model.pth")["jafar"])
+    model.load_state_dict(torch.load(f"./output/jafar/{backbone.name}/model.pth", weights_only=False)["jafar"])
     clear_output()
     return model, backbone

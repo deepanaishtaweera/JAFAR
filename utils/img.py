@@ -21,8 +21,8 @@ def unnormalize(tensor, mean, std):
     Unnormalizes a 4D tensor of shape (B, 3, H, W).
     """
     assert len(tensor.shape) == 4
-    mean = torch.tensor(mean).view(1, 3, 1, 1).to("cuda")  # Reshape to (1, C, 1, 1) for broadcasting
-    std = torch.tensor(std).view(1, 3, 1, 1).to("cuda")  # Reshape to (1, C, 1, 1) for broadcasting
+    mean = mean.view(1, 3, 1, 1).to("cuda")  # Reshape to (1, C, 1, 1) for broadcasting
+    std = std.view(1, 3, 1, 1).to("cuda")  # Reshape to (1, C, 1, 1) for broadcasting
 
     return tensor * std + mean  # Unnormalize
 

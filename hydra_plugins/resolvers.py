@@ -17,6 +17,8 @@ def get_feature(target: str) -> int:
         return 512
     if model_name == "radio_v2.5-h":
         return 1280
+    if model_name == "radio_v2.5-l":
+        return 1024
     if model_name == "radio_v2.5-b":
         return 768
 

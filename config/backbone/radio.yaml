@@ -1,4 +1,3 @@
 _target_: src.backbone.radio.RadioWrapper
-model_version: radio_v2.5-b  # Change as needed: radio_v2.5-g, radio_v2.5-l, etc.
+name: radio_v2.5-b  # Change as needed: radio_v2.5-g, radio_v2.5-l, etc.
 device: cuda
-name: ${backbone.model_version}

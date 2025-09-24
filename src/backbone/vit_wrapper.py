@@ -13,6 +13,7 @@ from torchvision import transforms
 
 MODEL_LIST = [
     "vit_small_patch14_dinov2.lvd142m",
+    "vit_base_patch14_dinov2.lvd142m",
     "vit_base_patch16_224.dino",
     "vit_small_patch14_reg4_dinov2",
     "vit_base_patch16_clip_384",

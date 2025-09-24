@@ -31,6 +31,7 @@
 <p align="center"><i>JAFAR is an efficient attention-based feature upsampler that allows upsampling to any resolution.</i></p>
 
 ## Updates:
+* 【24/09/2025】 **JAFAR** checkpoints for **Radio v2.5** (B/L/H) released.
 * 【23/09/2025】 **JAFAR** checkpoints for **DINOv3** (S/S+/B/L) released.
 * 【18/09/2025】 **JAFAR** is accepted at NeurIPS 2025!
 * 【10/06/2025】 Code released.
@@ -233,6 +234,9 @@ We provide pre-trained JAFAR models for various backbones. You can find the mode
 | ViT-L-16-DINOv3      | [Download](https://github.com/PaulCouairon/JAFAR/releases/download/Weights/vit_large_patch16_dinov3.lvd1689m.pth)                  |
 | ViT-B-16-CLIP            | [Download](https://github.com/PaulCouairon/JAFAR/releases/download/Weights/vit_base_patch16_clip_384.pth)                      |
 | ViT-B-16-SigLIP2          | [Download](https://github.com/PaulCouairon/JAFAR/releases/download/Weights/vit_base_patch16_siglip_512.v2_webli.pth)           |
+| Radio_v2.5-B          | [Download](https://github.com/PaulCouairon/JAFAR/releases/download/Weights/radio_v2.5-b.pth)           |
+| Radio_v2.5-L         | [Download](https://github.com/PaulCouairon/JAFAR/releases/download/Weights/radio_v2.5-l.pth)           |
+| Radio_v2.5-H          | [Download](https://github.com/PaulCouairon/JAFAR/releases/download/Weights/radio_v2.5-h.pth)           |
 
 </div>
 

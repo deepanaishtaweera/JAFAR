@@ -148,18 +148,11 @@ def trainer(cfg: DictConfig):
                 image_batch = F.interpolate(image_batch, scale_factor=0.5, mode="bilinear")
                 jafar_hr_feats = run_model(jafar, [image_batch, lr_feats, (h, w)])
 
-                noised_batch = add_blur_noise(image_batch)
-                pred_uhr_feats = run_model(jafar, [noised_batch, hr_feats, (224, 224)])
-                with torch.no_grad():
-                    target_uhr_feats = run_model(jafar, [image_batch, hr_feats, (224, 224)])
-
                 # ============ Loss JAFAR ============ #
-                loss = {"jafar_hr": 0.0, "jafar_reg": 0.0}
+                loss = {"jafar_hr": 0.0}
                 loss["jafar_hr"] = criterion(jafar_hr_feats, hr_feats)["total"]
-                if cfg.reg_weight > 0:
-                    loss["jafar_reg"] = criterion(pred_uhr_feats, target_uhr_feats.detach())["total"] * cfg.reg_weight
 
-            loss_jafar = loss["jafar_hr"] + loss["jafar_reg"]
+            loss_jafar = loss["jafar_hr"]
 
             optimizer_jafar.zero_grad()
             loss_jafar.backward()

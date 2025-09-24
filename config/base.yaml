@@ -16,7 +16,6 @@ epochs: 1
 max_steps: 100_000
 project_root: ${hydra:runtime.cwd}
 dataroot: ${project_root}/data/imagenet
-reg_weight: 0.0
 
 bfloat16: True 
 ratio: random

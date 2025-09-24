@@ -6,7 +6,11 @@ from IPython.display import clear_output
 
 
 def load_model(backbone, project_root):
-    overrides = ["val_dataloader.batch_size=1", f"project_root={project_root}", f"backbone.name={backbone}"]
+    overrides = ["val_dataloader.batch_size=1", f"project_root={project_root}"]
+    if "radio" in backbone:
+        overrides += ["backbone=radio"]
+    overrides += [f"backbone.name={backbone}"]
+    
     # Initialize Hydra manually for Jupyter Notebook
     if not GlobalHydra.instance().is_initialized():
         initialize(config_path="../config", version_base=None)
@@ -25,6 +29,6 @@ def load_model(backbone, project_root):
     model.eval()
 
     # Load checkpoint
-    model.load_state_dict(torch.load(f"./output/jafar/{backbone.name}/model.pth", weights_only=False)["jafar"])
+    model.load_state_dict(torch.load(f"./output/jafar/{backbone.name}.pth", weights_only=False)["jafar"])
     clear_output()
     return model, backbone

@@ -8,7 +8,7 @@ defaults:
   - dataset@val_dataset: val
   - dataloader@train_dataloader: train
   - dataloader@val_dataloader: val
-
+  - _self_
 
 # General parameters
 img_size: 448

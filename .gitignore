@@ -3,3 +3,6 @@ __pycache__/
 output/debug
 sanity/
 data/
+evaluation/unsupervised/**/.hydra/**
+evaluation/unsupervised/**/tb/**
+evaluation/unsupervised/**/logs/**

@@ -9,7 +9,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from einops import rearrange
-from hydra.utils import instantiate
+from hydra.utils import instantiate, get_original_cwd
 from omegaconf import OmegaConf
 from rich.console import Console
 from rich.progress import (BarColumn, Progress, SpinnerColumn,
@@ -478,10 +478,15 @@ def main(cfg):
     # Setup Model
     model = instantiate(cfg.model).to(device)
     if cfg.eval.model_ckpt:
-        checkpoint = torch.load(cfg.eval.model_ckpt)
+        model_ckpt_path = cfg.eval.model_ckpt
+        if not os.path.isabs(model_ckpt_path):
+            model_ckpt_path = os.path.join(get_original_cwd(), model_ckpt_path.lstrip("/"))
+        if not os.path.exists(model_ckpt_path):
+            raise FileNotFoundError(f"Model checkpoint not found: {model_ckpt_path}")
+        checkpoint = torch.load(model_ckpt_path, weights_only=False)
         if cfg.model.name == "jafar":
             model.load_state_dict(checkpoint["jafar"], strict=False)
-        log_print(f"[green]Loaded model from checkpoint: {cfg.eval.model_ckpt}[/green]")
+        log_print(f"[green]Loaded model from checkpoint: {model_ckpt_path}[/green]")
     else:
         model.train()
 

@@ -531,9 +531,15 @@ def main(cfg):
             for epoch in range(cfg.num_epochs):
                 evaluator.train(train_loader, progress, epoch, start_time)
                 evaluator.evaluate(val_loader, epoch)
+                
+                # Save checkpoint after each epoch
+                epoch_checkpoint_path = checkpoint_path.replace('.pth', f'_epoch_{epoch+1}.pth')
+                evaluator.save_checkpoint(epoch_checkpoint_path)
+                
                 if cfg.sanity:
                     break
 
+            # Save final checkpoint with original name
             evaluator.save_checkpoint(checkpoint_path)
 
     file_console.file.close()

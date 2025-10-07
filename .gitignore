@@ -5,4 +5,6 @@ sanity/
 data/
 evaluation/unsupervised/**/.hydra/**
 evaluation/unsupervised/**/tb/**
-evaluation/unsupervised/**/logs/**
+evaluation/unsupervised/**/*.log
+evaluation/**/*.pth
+output/**/*.pth

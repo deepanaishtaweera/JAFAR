@@ -1,0 +1,7 @@
+_target_: evaluation.dataset.trail.TrailDataset
+root: "/root/workspaces/thesis_ws/data/trail_dataset/all"
+split: "train"
+include_labels: true
+num_classes: 27
+tag: "trail"
+

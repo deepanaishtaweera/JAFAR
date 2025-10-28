@@ -28,46 +28,7 @@ from utils.visualization import UnNormalize
 LOG_INTERVAL = 100
 
 
-def eval_metrics(gt, pred, min_depth=1e-3, max_depth=10):
-    mask_1 = gt > min_depth
-    mask_2 = gt < max_depth
-    mask = np.logical_and(mask_1, mask_2)
-
-    gt = gt[mask]
-    pred = pred[mask]
-
-    thresh = np.maximum((gt / pred), (pred / gt))
-    d1 = (thresh < 1.25).mean()
-    d2 = (thresh < 1.25**2).mean()
-    d3 = (thresh < 1.25**3).mean()
-
-    abs_rel = np.mean(np.abs(gt - pred) / gt)
-    sq_rel = np.mean(((gt - pred) ** 2) / gt)
-
-    rmse = (gt - pred) ** 2
-    rmse = np.sqrt(rmse.mean())
-
-    rmse_log = (np.log(gt) - np.log(pred)) ** 2
-    rmse_log = np.sqrt(rmse_log.mean())
-
-    err = np.log(pred) - np.log(gt)
-    silog = np.sqrt(np.mean(err**2) - np.mean(err) ** 2) * 100
-
-    log_10 = (np.abs(np.log10(gt) - np.log10(pred))).mean()
-    return dict(
-        d1=d1,
-        d2=d2,
-        d3=d3,
-        abs_rel=abs_rel,
-        rmse=rmse,
-        log_10=log_10,
-        rmse_log=rmse_log,
-        silog=silog,
-        sq_rel=sq_rel,
-    )
-
-
-class UpsamplerEvaluator:
+class SegmentationEvaluator:
 
     def __init__(self, model, backbone, device, cfg, writer, console):
         self.model, self.backbone, self.device, self.cfg, self.writer, self.console = (
@@ -82,35 +43,10 @@ class UpsamplerEvaluator:
         self.mean = backbone.config["mean"]
         self.std = backbone.config["std"]
 
-        # Initialize task-specific components
-        if "seg" == cfg.eval.task:
-            self.accuracy_metric = Accuracy(num_classes=cfg.metrics.seg.num_classes, task="multiclass").to(device)
-            self.iou_metric = JaccardIndex(num_classes=cfg.metrics.seg.num_classes, task="multiclass").to(device)
-            self.classifier = nn.Conv2d(cfg.model.feature_dim, cfg.metrics.seg.num_classes, 1).to(device)
-        elif "depth" == cfg.eval.task:
-            from transformers import (AutoImageProcessor,
-                                      AutoModelForDepthEstimation)
-
-            from src.loss import GradientLoss, SigLoss
-
-            self.classifier = nn.Conv2d(
-                (2 * cfg.model.feature_dim),
-                256,
-                kernel_size=1,
-                padding=0,
-                stride=1,
-            ).to(device)
-            self.image_processor = AutoImageProcessor.from_pretrained("depth-anything/Depth-Anything-V2-Small-hf")
-            self.depth_model = (
-                AutoModelForDepthEstimation.from_pretrained("depth-anything/Depth-Anything-V2-Small-hf").to(device).eval()
-            )
-            self.sigloss = SigLoss(
-                valid_mask=True,
-                loss_weight=1.0,
-                warm_up=True,
-                max_depth=cfg.metrics.depth.max_depth,
-            )
-            self.gradientloss = GradientLoss(valid_mask=True, loss_weight=0.5, max_depth=cfg.metrics.depth.max_depth)
+        # Initialize segmentation-specific components
+        self.accuracy_metric = Accuracy(num_classes=cfg.metrics.seg.num_classes, task="multiclass").to(device)
+        self.iou_metric = JaccardIndex(num_classes=cfg.metrics.seg.num_classes, task="multiclass").to(device)
+        self.classifier = nn.Conv2d(cfg.model.feature_dim, cfg.metrics.seg.num_classes, 1).to(device)
 
     def set_up_classifier(self, checkpoint_path):
         """Load classifier weights from a checkpoint."""
@@ -161,72 +97,36 @@ class UpsamplerEvaluator:
 
             pred = self.model(image_batch, patch_tokens, (H, W))
 
-        if self.cfg.eval.task == "depth":
-            cls_token = F.normalize(cls_token, dim=2)[:, 0, :]  # Extract CLS token
-            cls_token = cls_token[:, :, None, None]
-            pred = torch.cat([pred, cls_token.expand_as(pred)], dim=1)
-
         pred = self.classifier(pred)
 
         # Some baselines upsample more than the required target size
         if pred.shape[-2:] != (H, W):
             pred = F.interpolate(pred, size=(H, W), mode="bilinear")
 
-        if self.cfg.eval.task == "seg":
-            if target.shape[-2:] != pred.shape[-2:]:
-                target = (
-                    F.interpolate(
-                        target.unsqueeze(1),
-                        size=pred.shape[-2:],
-                        mode="nearest-exact",
-                    )
-                    .squeeze(1)
-                    .to(target.dtype)
+        if target.shape[-2:] != pred.shape[-2:]:
+            target = (
+                F.interpolate(
+                    target.unsqueeze(1),
+                    size=pred.shape[-2:],
+                    mode="nearest-exact",
                 )
-
-            # Create mask for valid pixels (not 255)
-            valid_mask = target != 255
-
-            # Reshape predictions and targets
-            pred = rearrange(pred, "b c h w -> (b h w) c")
-            target = rearrange(target, "b h w -> (b h w)")
-            valid_mask = rearrange(valid_mask, "b h w -> (b h w)")
-
-            # Apply mask to both pred and target
-            pred = pred[valid_mask]
-            target = target[valid_mask]
-
-            return pred, target
-
-        elif self.cfg.eval.task == "depth":
-            depth_image_batch = (255 * image_batch.permute(0, 2, 3, 1).cpu().numpy()).astype(np.uint8)
-            inputs = self.image_processor(images=depth_image_batch, return_tensors="pt").to("cuda")
-            with torch.no_grad():
-                pseudo_depth = self.depth_model(**inputs)["predicted_depth"]
-
-            target = F.interpolate(
-                pseudo_depth.unsqueeze(1),
-                size=pred.shape[-2:],
-                mode="bilinear",
-                align_corners=False,
+                .squeeze(1)
+                .to(target.dtype)
             )
 
-            bins = torch.linspace(
-                self.cfg.metrics.depth.min_depth,
-                self.cfg.metrics.depth.max_depth,
-                256,
-                device="cuda",
-            )
-            # Dinov2
-            pred = F.relu(pred)
-            eps = 0.1
-            pred = pred + eps
-            pred = pred / pred.sum(dim=1, keepdim=True)
-            pred = torch.einsum("ikmn,k->imn", [pred, bins]).unsqueeze(dim=1)
-            return pred, target
+        # Create mask for valid pixels (not 255)
+        valid_mask = target != 255
 
-        else:
-            return NotImplementedError
+        # Reshape predictions and targets
+        pred = rearrange(pred, "b c h w -> (b h w) c")
+        target = rearrange(target, "b h w -> (b h w)")
+        valid_mask = rearrange(valid_mask, "b h w -> (b h w)")
+
+        # Apply mask to both pred and target
+        pred = pred[valid_mask]
+        target = target[valid_mask]
+
+        return pred, target
 
     def train(
         self,
@@ -262,10 +162,7 @@ class UpsamplerEvaluator:
 
             pred, target = self.process_batch(image_batch, target, is_training=True)
 
-            if self.cfg.eval.task == "seg":
-                loss = F.cross_entropy(pred, target)
-            elif self.cfg.eval.task == "depth":
-                loss = self.sigloss(pred, target) + self.gradientloss(pred, target)
+            loss = F.cross_entropy(pred, target)
 
             loss.backward()
             self.optimizer.step()
@@ -328,7 +225,7 @@ class UpsamplerEvaluator:
             "epoch": self.cfg.num_epochs - 1,
             "model_state_dict": self.classifier.state_dict(),
             "optimizer_state_dict": self.optimizer.state_dict(),
-            "task": self.cfg.eval.task,
+            "task": "seg",
             "backbone": self.cfg.backbone.name,
         }
         torch.save(checkpoint, checkpoint_path)
@@ -346,24 +243,8 @@ class UpsamplerEvaluator:
         self.classifier.eval()
 
         # Reset metrics at the start of evaluation
-        if self.cfg.eval.task == "seg":
-            self.accuracy_metric.reset()
-            self.iou_metric.reset()
-
-        elif self.cfg.eval.task == "depth":
-            results = {
-                "d1": 0,
-                "d2": 0,
-                "d3": 0,
-                "abs_rel": 0,
-                "sq_rel": 0,
-                "rmse": 0,
-                "rmse_log": 0,
-                "log_10": 0,
-                "silog": 0,
-            }
-
-            nsamples = 0
+        self.accuracy_metric.reset()
+        self.iou_metric.reset()
 
         for batch_idx, batch in enumerate(tqdm(dataloader, desc="Evaluating")):
             batch = get_batch(batch, self.device)
@@ -373,31 +254,16 @@ class UpsamplerEvaluator:
             # Process batch and get masked predictions and targets
             pred, target = self.process_batch(image_batch, target, is_training=False)
 
-            if self.cfg.eval.task == "seg":
-                self.accuracy_metric(pred, target)
-                self.iou_metric(pred, target)
-
-            elif self.cfg.eval.task == "depth":
-                cur_results = eval_metrics(target.cpu().detach().numpy(), pred.cpu().detach().numpy())
-
-                for k in results.keys():
-                    results[k] += cur_results[k]
-                nsamples += 1
+            self.accuracy_metric(pred, target)
+            self.iou_metric(pred, target)
 
             if self.cfg.sanity and batch_idx == 0:
                 break
 
-        metrics = {}
-        if self.cfg.eval.task == "seg":
-            metrics.update(
-                {
-                    "accuracy": self.accuracy_metric.compute().item(),
-                    "iou": self.iou_metric.compute().item(),
-                }
-            )
-        elif self.cfg.eval.task == "depth":
-            for k in results.keys():
-                metrics[k] = results[k] / nsamples
+        metrics = {
+            "accuracy": self.accuracy_metric.compute().item(),
+            "iou": self.iou_metric.compute().item(),
+        }
 
         # Log metrics to TensorBoard
         self.log_tensorboard(step=epoch, metrics=metrics)
@@ -425,7 +291,7 @@ class UpsamplerEvaluator:
 
 @hydra.main(config_path="../config", config_name="eval")
 def main(cfg):
-    task = cfg.eval.task
+    task = "seg"  # Force segmentation task
 
     # Setup Classifier
     # Either we train one classifier per backbone.
@@ -491,17 +357,12 @@ def main(cfg):
         model.train()
 
     # Setup Dataloaders
-    if cfg.eval.task == "depth":
-        mean = [0, 0, 0]
-        std = [1, 1, 1]
-    else:
-        mean, std = None, None
-    train_loader, val_loader = get_dataloaders(cfg, backbone, is_evaluation=True, mean=mean, std=std)
+    train_loader, val_loader = get_dataloaders(cfg, backbone, is_evaluation=True, mean=None, std=None)
     log_print(f"[bold cyan]Train Dataset size: {len(train_loader.dataset)}[/bold cyan]")
     log_print(f"[bold cyan]Val Dataset size: {len(val_loader.dataset)}[/bold cyan]")
 
     # Setup Evaluator
-    evaluator = UpsamplerEvaluator(model, backbone, device, cfg, writer, file_console)
+    evaluator = SegmentationEvaluator(model, backbone, device, cfg, writer, file_console)
 
     # Already trained
     if Path(checkpoint_path).exists():

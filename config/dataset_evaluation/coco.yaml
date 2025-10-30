@@ -1,5 +1,5 @@
 _target_: evaluation.dataset.coco.COCODataset
-root: "/root/workspaces/thesis_ws/src/JAFAR/data/COCOStuff"
+root: "${project_root}/data/COCOStuff"
 split: "train"
 include_labels: True
 subset: null

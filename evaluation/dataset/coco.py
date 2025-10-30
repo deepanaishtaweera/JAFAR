@@ -21,6 +21,37 @@ def bit_get(val, idx):
 
 class COCODataset(Dataset):
 
+    # COCO-Stuff 27 class labels (id, isthing, name)
+    CLASS_LABELS = [
+        {"id": 0,  "isthing": 1, "name": "electronic-things"},
+        {"id": 1,  "isthing": 1, "name": "appliance-things"},
+        {"id": 2,  "isthing": 1, "name": "food-things"},
+        {"id": 3,  "isthing": 1, "name": "furniture-things"},
+        {"id": 4,  "isthing": 1, "name": "indoor-things"},
+        {"id": 5,  "isthing": 1, "name": "kitchen-things"},
+        {"id": 6,  "isthing": 1, "name": "accessory-things"},
+        {"id": 7,  "isthing": 1, "name": "animal-things"},
+        {"id": 8,  "isthing": 1, "name": "outdoor-things"},
+        {"id": 9,  "isthing": 1, "name": "person-things"},
+        {"id": 10, "isthing": 1, "name": "sports-things"},
+        {"id": 11, "isthing": 1, "name": "vehicle-things"},
+        {"id": 12, "isthing": 0, "name": "ceiling-stuff"},
+        {"id": 13, "isthing": 0, "name": "floor-stuff"},
+        {"id": 14, "isthing": 0, "name": "food-stuff"},
+        {"id": 15, "isthing": 0, "name": "furniture-stuff"},
+        {"id": 16, "isthing": 0, "name": "rawmaterial-stuff"},
+        {"id": 17, "isthing": 0, "name": "textile-stuff"},
+        {"id": 18, "isthing": 0, "name": "wall-stuff"},
+        {"id": 19, "isthing": 0, "name": "window-stuff"},
+        {"id": 20, "isthing": 0, "name": "building-stuff"},
+        {"id": 21, "isthing": 0, "name": "ground-stuff"},
+        {"id": 22, "isthing": 0, "name": "plant-stuff"},
+        {"id": 23, "isthing": 0, "name": "sky-stuff"},
+        {"id": 24, "isthing": 0, "name": "solid-stuff"},
+        {"id": 25, "isthing": 0, "name": "structural-stuff"},
+        {"id": 26, "isthing": 0, "name": "water-stuff"},
+    ]
+
     def __init__(
         self,
         root,

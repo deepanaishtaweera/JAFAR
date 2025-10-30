@@ -11,6 +11,28 @@ from torchvision.datasets import Cityscapes
 class CityscapesDataset(Dataset):
     BASE_DIR = "cityscapes"
     NUM_CLASS = 19
+    # Cityscapes class labels in the format {"id": idx, "isthing": X, "name": class_name}
+    CLASS_LABELS = [
+        {"id": 0,  "isthing": 0, "name": "road"},
+        {"id": 1,  "isthing": 0, "name": "sidewalk"},
+        {"id": 2,  "isthing": 0, "name": "building"},
+        {"id": 3,  "isthing": 0, "name": "wall"},
+        {"id": 4,  "isthing": 0, "name": "fence"},
+        {"id": 5,  "isthing": 1, "name": "pole"},
+        {"id": 6,  "isthing": 1, "name": "traffic light"},
+        {"id": 7,  "isthing": 1, "name": "traffic sign"},
+        {"id": 8,  "isthing": 0, "name": "vegetation"},
+        {"id": 9,  "isthing": 0, "name": "terrain"},
+        {"id": 10, "isthing": 0, "name": "sky"},
+        {"id": 11, "isthing": 1, "name": "person"},
+        {"id": 12, "isthing": 1, "name": "rider"},
+        {"id": 13, "isthing": 1, "name": "car"},
+        {"id": 14, "isthing": 1, "name": "truck"},
+        {"id": 15, "isthing": 1, "name": "bus"},
+        {"id": 16, "isthing": 1, "name": "train"},
+        {"id": 17, "isthing": 1, "name": "motorcycle"},
+        {"id": 18, "isthing": 1, "name": "bicycle"},
+    ]
 
     def __init__(
         self,

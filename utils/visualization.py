@@ -18,6 +18,7 @@ def plot_feats(
     save_path=None,
     is_segmentation=False,
     num_classes=None,
+    save_individual=False, 
 ):
     """
     Plots features or segmentation results in a grid format.
@@ -99,9 +100,19 @@ def plot_feats(
             ax_single.set_title(axis_legend)
             plt.savefig(axis_save_path, bbox_inches="tight", dpi=300)
             plt.close(fig_single)
-
     else:
         plt.show()
+
+    if save_individual:
+        for i, axis in enumerate(ax):
+            axis_legend = legend[i] if i < len(legend) else f"Axis_{i}"
+            axis_save_path = save_dir / f"{axis_legend.replace(' ', '_').lower()}.png"
+            fig_single, ax_single = plt.subplots(figsize=(5, 5))
+            ax_single.imshow(axis.images[0].get_array(), cmap=axis.images[0].get_cmap(), norm=axis.images[0].norm)
+            # Omit title and borders
+            ax_single.axis('off')
+            plt.savefig(axis_save_path, bbox_inches="tight", pad_inches=0, dpi=300)
+            plt.close(fig_single)
 
 
 def _remove_axes(ax):
